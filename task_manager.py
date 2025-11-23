@@ -1,30 +1,55 @@
+import re
 tasks = []
 
+# vytvorenie regex funkcie na validáciu či input naozaj obsahuje iba písmená (povolenie písmen všetkých jazykov)
+def is_valid(text):
+    return bool(re.fullmatch(r"[^\W\d_ ]+( [^\W\d_ ]+)*", text))
+
+
+
+# funkcia zabezbečí že vložené údaje budú správne, a ak nie, voľba sa opakuje
 def pridat_ulohu():
     
     while True:
-        task_name = input("Zadajte názov úlohy: " )
-        task_des = input("Zadajte popis úlohy: " )
-
-        if task_name != "" and task_des != "":
-            tasks.append({"name": task_name, "description": task_des})
+        task_name = input("Zadajte názov úlohy:" ).strip()
+        task_des = input("Zadajte popis úlohy: " ).strip()
+      
+        if is_valid(task_name) and is_valid(task_des):
+            task_ID  = int(len(tasks) + 1)
+            tasks.append({"name": task_name, "description": task_des, "ID":task_ID})
+            print(f"Úloha č. {task_ID} bola úspešne pridaná.\n")
+            hlavne_menu()
+            break
         else:
             print("Zadali ste neplatné údaje...")
-        break
+            continue
+            
 
+# funkcia na zobrazenie úloh
 def zobrazit_ulohy():
-    count = 0
+
     if tasks != []:
+        print("Zoznam úloh: ")
         for task in tasks:
-            count += 1
-            print("Zoznam úloh: ")
-            print(f"{count} {task['name']} - {task['description']}")
+            print(f"{task["ID"]}. {task['name']} - {task['description']}")
     else:
         print("Žiadne tasky k dispozícii...")
 
 
 def odstranit_ulohu():
-    print("Funkcia odstranit_ulohu() bola spustena.")
+    zobrazit_ulohy()
+    option = int(input("Zadajte cislo ulohy ktoru chcete zmazat: "))
+
+    for task in tasks:
+        if task["ID"] == option:
+            tasks.remove(task)
+            print(f"Úloho číslo {task["ID"]} bola zmazaná.")
+            hlavne_menu()
+            break
+        else:
+            print(f"Žiadna úloha nenájdená pod číslom {str(option)}")
+            odstranit_ulohu()
+            
 
 
 def koniec_programu():
@@ -50,6 +75,6 @@ def hlavne_menu():
             print("Program konci, ahoj!")
             break
         else:
-            print("Neplatna volba, skuste to znovu.")
+            print("Neplatná voľba, skúste to znovu prosím.")
 
 hlavne_menu()
