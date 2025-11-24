@@ -25,35 +25,33 @@ def pridat_ulohu():
             continue
             
 
-# funkcia na zobrazenie úloh
-def zobrazit_ulohy():
 
-    if tasks != []:
+# funkcia na zobrazenie úloh s kontinuálnym číslovaním
+def zobrazit_ulohy():
+    if tasks:
         print("Zoznam úloh: ")
-        for task in tasks:
-            print(f"{task["ID"]}. {task['name']} - {task['description']}")
+        for idx, task in enumerate(tasks, start=1):
+            print(f"{idx}. {task['name']} - {task['description']}")
     else:
         print("Žiadne tasky k dispozícii...")
 
-
+# funkcia na odstránenie úlohy podľa poradia
 def odstranit_ulohu():
     zobrazit_ulohy()
+    if not tasks:
+        return
     option = int(input("Zadajte cislo ulohy ktoru chcete zmazat: "))
-
-    for task in tasks:
-        if task["ID"] == option:
-            tasks.remove(task)
-            print(f"Úloho číslo {task["ID"]} bola zmazaná.")
-            hlavne_menu()
-            break
-        else:
-            print(f"Žiadna úloha nenájdená pod číslom {str(option)}")
-            odstranit_ulohu()
-            
+    if 1 <= option <= len(tasks):
+        removed_task = tasks.pop(option-1)
+        print(f"Úloha '{removed_task['name']}' bola zmazaná.")
+    else:
+        print("Zadané číslo nie je platné.")
+      
 
 
 def koniec_programu():
-    hlavne_menu.destroy()
+    print("Program konci, ahoj!\n")
+    exit()
 
 def hlavne_menu():
     while True:
@@ -72,7 +70,8 @@ def hlavne_menu():
         elif option == '3':
             odstranit_ulohu()
         elif option == '4':
-            print("Program konci, ahoj!")
+            koniec_programu()
+            
             break
         else:
             print("Neplatná voľba, skúste to znovu prosím.")
