@@ -1,9 +1,9 @@
-import re
 tasks = []
 
-# vytvorenie regex funkcie na validáciu či input naozaj obsahuje iba písmená (povolenie písmen všetkých jazykov)
-def is_valid(text):
-    return bool(re.fullmatch(r"[^\W\d_ ]+( [^\W\d_ ]+)*", text))
+
+# # funkcia ktorá kontroluje či vstup obsahuje aspon 3 písmená
+# def contains_three_letters(text):
+#     return sum(c.isalpha() for c in text) >= 3
 
 
 
@@ -14,14 +14,14 @@ def pridat_ulohu():
         task_name = input("Zadajte názov úlohy:" ).strip()
         task_des = input("Zadajte popis úlohy: " ).strip()
       
-        if is_valid(task_name) and is_valid(task_des):
+        if task_name != "" and task_des != "":
             task_ID  = int(len(tasks) + 1)
             tasks.append({"name": task_name, "description": task_des, "ID":task_ID})
             print(f"Úloha č. {task_ID} bola úspešne pridaná.\n")
             hlavne_menu()
             break
         else:
-            print("Zadali ste neplatné údaje...")
+            print("Zadali ste prázdny vstup, opakujte voľbu prosím.")
             continue
             
 
@@ -40,7 +40,7 @@ def odstranit_ulohu():
     zobrazit_ulohy()
     if not tasks:
         return
-    option = int(input("Zadajte cislo ulohy ktoru chcete zmazat: "))
+    option = int(input("Zadajte číslo úlohy ktorú chcete zmazať: "))
     if 1 <= option <= len(tasks):
         removed_task = tasks.pop(option-1)
         print(f"Úloha '{removed_task['name']}' bola zmazaná.")
@@ -50,17 +50,17 @@ def odstranit_ulohu():
 
 
 def koniec_programu():
-    print("Program konci, ahoj!\n")
+    print("Koniec programu.\n")
     exit()
 
 def hlavne_menu():
     while True:
-        print("\nSpravca uloh - hlavne menu")
-        print("1. Pridat novu ulohu")
-        print("2. Zobrazit vsetky ulohy")
-        print("3. Odstranit ulohu")
+        print("\nSprávca úloh - hlavné menu")
+        print("1. Pridať novú úlohu")
+        print("2. Zobraziť všetky úlohy")
+        print("3. Odstraniť úlohu")
         print("4. Koniec programu")
-        option = input("Vyberte moznost (1-4): ")
+        option = input("Vyberte možnosť (1-4): ")
         print("\n")
 
         if option == '1':
