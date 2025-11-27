@@ -1,10 +1,10 @@
-tasks = []
-
-
-# # funkcia ktorá kontroluje či vstup obsahuje aspon 3 písmená
-# def contains_three_letters(text):
-#     return sum(c.isalpha() for c in text) >= 3
-
+tasks = [
+    {"name": "Úloha 1", "description": "Popis pre úlohu 1", "ID": 1},
+    {"name": "Úloha 2", "description": "Popis pre úlohu 2", "ID": 2},
+    {"name": "Úloha 3", "description": "Popis pre úlohu 3", "ID": 3},
+    {"name": "Úloha 4", "description": "Popis pre úlohu 4", "ID": 4},
+    {"name": "Úloha 5", "description": "Popis pre úlohu 5", "ID": 5},
+]
 
 
 # funkcia zabezbečí že vložené údaje budú správne, a ak nie, voľba sa opakuje
@@ -14,10 +14,10 @@ def pridat_ulohu():
         task_name = input("Zadajte názov úlohy:" ).strip()
         task_des = input("Zadajte popis úlohy: " ).strip()
       
-        if task_name != "" and task_des != "":
+        if task_name and task_des:
             task_ID  = int(len(tasks) + 1)
             tasks.append({"name": task_name, "description": task_des, "ID":task_ID})
-            print(f"Úloha č. {task_ID} bola úspešne pridaná.\n")
+            print(f'Úloha "{task_name}"  bola úspešne pridaná.\n')
             hlavne_menu()
             break
         else:
@@ -27,27 +27,30 @@ def pridat_ulohu():
 
 
 # funkcia na zobrazenie úloh s kontinuálnym číslovaním
+
 def zobrazit_ulohy():
     if tasks:
-        print("Zoznam úloh: ")
+        print("Zoznam úloh:\n")
         for idx, task in enumerate(tasks, start=1):
             print(f"{idx}. {task['name']} - {task['description']}")
     else:
         print("Žiadne tasky k dispozícii...")
 
-# funkcia na odstránenie úlohy podľa poradia
 def odstranit_ulohu():
-    zobrazit_ulohy()
-    if not tasks:
-        return
-    option = int(input("Zadajte číslo úlohy ktorú chcete zmazať: "))
-    if 1 <= option <= len(tasks):
-        removed_task = tasks.pop(option-1)
-        print(f"Úloha '{removed_task['name']}' bola zmazaná.")
-    else:
-        print("Zadané číslo nie je platné.")
-      
-
+    while True:
+        zobrazit_ulohy()
+        if not tasks:
+            return
+        try:
+            option = int(input("Zadajte číslo úlohy ktorú chcete zmazať: "))
+            if 1 <= option <= len(tasks):
+                removed_task = tasks.pop(option-1)
+                print(f"Úloha '{removed_task['name']}' bola zmazaná.")
+                break  # úspešne odstránené
+            else:
+                print("Zadané číslo nie je platné.\n")
+        except ValueError:
+            print("Hodnota môže byť len číslo.")
 
 def koniec_programu():
     print("Koniec programu.\n")
